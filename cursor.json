@@ -1,0 +1,104 @@
+{
+  "name": "BrandsTenet Development Rules",
+  "description": "Rules and guidelines for developing the BrandsTenet application",
+  "rules": [
+    {
+      "name": "File Structure",
+      "description": "Maintain a clean and organized file structure for better code navigation and maintainability.",
+      "guidelines": [
+        "Place all page components in the src/app directory following Next.js app router conventions",
+        "Store reusable UI components in src/components directory",
+        "Create separate folders for related components (e.g., src/components/auth, src/components/store)",
+        "Use index.tsx files for exporting components from directories"
+      ]
+    },
+    {
+      "name": "Naming Conventions",
+      "description": "Follow consistent naming conventions to improve code readability and maintainability.",
+      "guidelines": [
+        "Use PascalCase for component names (e.g., StoreCard.tsx)",
+        "Use camelCase for variables, functions, and file names for non-component files",
+        "Use kebab-case for CSS class names",
+        "Prefix interface names with 'I' (e.g., IStoreProps)",
+        "Suffix type names with 'Type' (e.g., StoreFilterType)"
+      ]
+    },
+    {
+      "name": "Code Style",
+      "description": "Maintain consistent code style throughout the project.",
+      "guidelines": [
+        "Use TypeScript for all new components and features",
+        "Use arrow functions for component definitions and callbacks",
+        "Keep components focused on a single responsibility",
+        "Use meaningful variable and function names",
+        "Add JSDoc comments for complex functions and components"
+      ]
+    },
+    {
+      "name": "CSS Guidelines",
+      "description": "Follow these guidelines for styling components.",
+      "guidelines": [
+        "Use TailwindCSS for component styling",
+        "Create custom utility classes for repeated style patterns",
+        "Maintain responsive design for all components",
+        "Use CSS variables for theme colors and consistent spacing",
+        "Avoid inline styles except for dynamic values"
+      ]
+    },
+    {
+      "name": "State Management",
+      "description": "Guidelines for managing application state.",
+      "guidelines": [
+        "Use React useState and useReducer for component-level state",
+        "Use context API for shared state across multiple components",
+        "Keep state as close as possible to where it's used",
+        "Use useEffect cleanup functions to prevent memory leaks",
+        "Avoid prop drilling by using context or custom hooks"
+      ]
+    },
+    {
+      "name": "Performance",
+      "description": "Ensure good performance throughout the application.",
+      "guidelines": [
+        "Use React.memo for expensive rendering components",
+        "Implement lazy loading for images and components",
+        "Use useCallback and useMemo for expensive operations",
+        "Optimize rerenders by using proper dependency arrays in useEffect",
+        "Implement pagination for large data sets"
+      ]
+    },
+    {
+      "name": "Accessibility",
+      "description": "Ensure the application is accessible to all users.",
+      "guidelines": [
+        "Use semantic HTML elements",
+        "Include proper ARIA attributes where necessary",
+        "Ensure proper color contrast for text",
+        "Make all interactive elements keyboard accessible",
+        "Test with screen readers"
+      ]
+    },
+    {
+      "name": "Testing",
+      "description": "Guidelines for testing components and functionality.",
+      "guidelines": [
+        "Write unit tests for utils and hooks",
+        "Write component tests with React Testing Library",
+        "Test all user interactions and state changes",
+        "Aim for good test coverage for critical paths",
+        "Create integration tests for important user flows"
+      ]
+    },
+    {
+      "name": "Git Workflow",
+      "description": "Follow these guidelines for version control.",
+      "guidelines": [
+        "Use feature branches for new features and bug fixes",
+        "Write clear and concise commit messages",
+        "Keep pull requests focused on a single concern",
+        "Squash commits before merging",
+        "Maintain a clean commit history"
+      ]
+    }
+  ]
+} 

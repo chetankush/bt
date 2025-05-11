@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image'
@@ -5,8 +7,9 @@ import { Store, ShoppingBag, Zap, Search, Globe, CreditCard } from 'lucide-react
 import StepsSection from '@/components/StepsSection';
 import ShoppingShowcase from '@/components/ShoppingShowcase';
 import Footer from '@/components/Footer';
-import SearchBar from '@/components/SearchBar';
-
+import Header from '@/components/Header';
+import { useAuth } from '@/context/AuthContext';
+import { useCart } from '@/context/CartContext';
 
 // Sample store data
 const storeData = [
@@ -78,47 +81,23 @@ const storeData = [
   }
 ];
 
-
-
-
 export default function LandingPage() {
+  const { user, isAuthenticated } = useAuth();
+  const { getCartCount } = useCart();
+  
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 bg-white border-b border-gray-100 z-50">
-        <div className="max-w-7xl mx-auto px-4 py-2 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            {/* Logo */}
-            <Link href="/" className="text-2xl font-bold text-gray-900">
-              BrandsTenet
-            </Link>
-
-            {/* Search Bar Component */}
-            <SearchBar />
-            
-            {/* Navigation */}
-            <div className="flex items-center gap-4">
-              <Link 
-                href="/auth/seller/signup" 
-                className="hidden md:flex items-center gap-2 px-6 py-2 border-2 border-blue-600 text-blue-600 font-semibold rounded-full hover:bg-blue-50 transition-colors"
-              >
-                <Store className="w-4 h-4" />
-                <span>Become a Seller</span>
-              </Link>
-              <Link 
-                href="/auth/login"
-                className="px-6 py-2 rounded-full bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-colors"
-              >
-                Sign In
-              </Link>
-            </div>
-
-          </div>
-        </div>
-      </header>
+      <Header 
+        isLoggedIn={isAuthenticated} 
+        userAvatar={user?.avatarUrl} 
+        userName={user?.name}
+        cartItemCount={getCartCount()}
+        isSellerAccount={user?.role === 'seller'}
+      />
 
       {/* Hero Section */}
-      <main className="pt-16">
+      <main className="pt-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row items-center gap-12 py-16">
             {/* Hero Content */}
@@ -186,8 +165,14 @@ export default function LandingPage() {
             <button className="px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-full transition-colors">
               Electronics
             </button>
+            <button className="px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-full transition-colors">
+              Beauty
+            </button>
+            <button className="px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-full transition-colors">
+              Groceries
+            </button>
           </div>
-          <select className="pl-4  py-2 border border-gray-200 rounded-full text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <select className="pl-4 py-2 border border-gray-200 rounded-full text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
             <option>Most Popular</option>
             <option>Newest First</option>
             <option>Closest to Me</option>
@@ -203,9 +188,9 @@ export default function LandingPage() {
 
         {/* View More Button */}
         <div className="text-center mt-12">
-          <button className="px-8 py-3 bg-white text-blue-600 font-semibold border-2 border-blue-600 rounded-full hover:bg-blue-50 transition-colors">
+          <Link href="/stores" className="px-8 py-3 bg-white text-blue-600 font-semibold border-2 border-blue-600 rounded-full hover:bg-blue-50 transition-colors inline-block">
             View More Stores
-          </button>
+          </Link>
         </div>
       </div>
     </section>
@@ -215,27 +200,6 @@ export default function LandingPage() {
     </div>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 interface Store {
   id: number;
@@ -249,46 +213,40 @@ interface Store {
   imageUrl: string;
 }
 
-
-
-
-
-
 const StoreCard = ({ store} : { store: Store }) => (
-  <div className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-    <div className="relative h-48">
-      <img
-        src={store.imageUrl}
-        alt={`${store.name} Preview`}
-        className="w-full h-full object-cover"
-      />
-      <div className="absolute top-4 right-4 px-3 py-1 bg-black shadow-md text-white text-sm font-medium rounded-full">
-        {store.category}
-      </div>
-    </div>
-    <div className="p-6">
-      <div className="flex justify-between items-start mb-4">
-        <div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-1">{store.name}</h3>
-          <p className="text-sm text-gray-500">{store.location}</p>
-        </div>
-        <div className="flex items-center text-sm text-yellow-500">
-          <span className="mr-1">{store.rating}</span>
-          <span>★</span>
+  <Link href={`/stores/${store.id}`} className="block">
+    <div className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+      <div className="relative h-48">
+        <img
+          src={store.imageUrl}
+          alt={`${store.name} Preview`}
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute top-4 right-4 px-3 py-1 bg-black shadow-md text-white text-sm font-medium rounded-full">
+          {store.category}
         </div>
       </div>
-      <p className="text-gray-600 text-sm mb-4">
-        {store.description}
-      </p>
-      <div className="flex justify-between items-center">
-        <span className="text-sm text-gray-500">{store.productCount}+ Products</span>
-        <Link 
-          href={`/store/${store.slug}`}
-          className="px-4 py-2 text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors"
-        >
-          Visit Store →
-        </Link>
+      <div className="p-6">
+        <div className="flex justify-between items-start mb-4">
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-1">{store.name}</h3>
+            <p className="text-sm text-gray-500">{store.location}</p>
+          </div>
+          <div className="flex items-center text-sm text-yellow-500">
+            <span className="mr-1">{store.rating}</span>
+            <span>★</span>
+          </div>
+        </div>
+        <p className="text-gray-600 text-sm mb-4">
+          {store.description}
+        </p>
+        <div className="flex justify-between items-center">
+          <span className="text-sm text-gray-500">{store.productCount}+ Products</span>
+          <span className="px-4 py-2 text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors">
+            Visit Store →
+          </span>
+        </div>
       </div>
     </div>
-  </div>
+  </Link>
 );
